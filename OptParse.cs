@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Xml.Xsl;
 using CommandLine;
+using CommandLine.Text;
 
 namespace dupFinderEaser
 {
@@ -17,7 +18,6 @@ namespace dupFinderEaser
             var result = (ParserResult<Options>) Parser.Default.ParseArguments<Options>(args);
             if (result.Tag != ParserResultType.Parsed)
             {
-                Console.WriteLine("Can not parse args.");
                 return;
             }
 
@@ -39,7 +39,7 @@ namespace dupFinderEaser
         private bool DiscardTypes => _options.DiscardTypes;
         private bool DiscardLocalVars => _options.DiscardLocalVars;
         private IEnumerable<string> Properties => _options.Properties;
-        private IEnumerable<string> Targets => _options.Targets;
+        private IEnumerable<string> Targets => _options.Source;
 
         void Exec()
         {
@@ -51,7 +51,7 @@ namespace dupFinderEaser
             Console.WriteLine($"{nameof(Options.DiscardTypes)}     : {DiscardTypes.ToString()}");
             Console.WriteLine($"{nameof(Options.DiscardLocalVars)} : {DiscardLocalVars.ToString()}");
             Console.WriteLine($"{nameof(Options.Properties)}       : {string.Join(';', Properties.ToArray())}");
-            Console.WriteLine($"{nameof(Options.Targets)}          : {string.Join(';', Targets.ToArray())}");
+            Console.WriteLine($"{nameof(Options.Source)}           : {string.Join(';', Targets.ToArray())}");
 
             if (!Targets.Any())
             {
@@ -95,7 +95,7 @@ namespace dupFinderEaser
                     if (opts.DiscardTypes) args.Add("--discard-types=true");
                     if (opts.DiscardLocalVars) args.Add("--discard-local-vars=true");
                     if (opts.Properties.Any()) args.Add($"--properties:{string.Join(';', opts.Properties)}");
-                    args.Add(string.Join(' ', opts.Targets));
+                    args.Add(string.Join(' ', opts.Source));
                     process.StartInfo.Arguments = string.Join(" ", args);
                     Console.WriteLine($"args : {process.StartInfo.Arguments}");
                     Console.WriteLine("Wait for dupFinder app");
