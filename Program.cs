@@ -6,7 +6,6 @@ namespace dupFinderEaser
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
             OptParse.Parse(args);
         }
     }
